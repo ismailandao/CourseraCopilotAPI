@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  copilotapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5196:8080"
+      - "7196:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:8081;http://+:8080
+      - ASPNETCORE_HTTPS_PORT=7196
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+    networks:
+      - copilot-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a reverse proxy for production deployment
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/ssl:ro
+    depends_on:
+      - copilotapi
+    networks:
+      - copilot-network
+    restart: unless-stopped
+    profiles:
+      - production
+
+networks:
+  copilot-network:
+    driver: bridge
+
+volumes:
+  app-data:
+    driver: local
