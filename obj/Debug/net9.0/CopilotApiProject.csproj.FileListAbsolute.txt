@@ -311,3 +311,4 @@ C:\Users\indao\OneDrive - Bureau Veritas\Documents\vscode_github\CopilotApiProje
 C:\Users\indao\OneDrive - Bureau Veritas\Documents\vscode_github\CopilotApiProject\obj\Debug\net9.0\CopilotApiProject.pdb
 C:\Users\indao\OneDrive - Bureau Veritas\Documents\vscode_github\CopilotApiProject\obj\Debug\net9.0\CopilotApiProject.genruntimeconfig.cache
 C:\Users\indao\OneDrive - Bureau Veritas\Documents\vscode_github\CopilotApiProject\obj\Debug\net9.0\ref\CopilotApiProject.dll
+C:\Users\indao\OneDrive - Bureau Veritas\Documents\vscode_github\CopilotApiProject\bin\Debug\net9.0\appsettings.Production.json
