@@ -1,0 +1,294 @@
+### TechHive User Management API Test Requests
+
+@baseUrl = http://localhost:5196
+# Note: Replace the port with the actual port shown when you run the API
+# Using HTTP for development (matches launchSettings.json)
+
+# Authentication variables (update with actual tokens)
+@authToken = yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwiZW1haWwiOiJqb2huLmRvZUB0ZWNoaGl2ZS5jb20iLCJqdGkiOiJkNjkzNTRmNi1kNDdiLTQ0YzItODA5NS04NDJhZmE3NzkyNDgiLCJpYXQiOjE3NjM1OTcwNTEsInJvbGUiOlsiVXNlciIsIkVtcGxveWVlIl0sIm5iZiI6MTc2MzU5NzA1MSwiZXhwIjoxNzYzNjA0MjUxLCJpc3MiOiJUZWNoSGl2ZS5EZXYuQVBJIiwiYXVkIjoiVGVjaEhpdmUuRGV2LkNsaWVudCJ9.pupTfMP2TuYKW7rVC7qbkGeQFGL4W_4HMRHbHldqHV8
+@expiredToken = 2025-11-20T02:04:54.2925014Z
+
+### Health Check (Public endpoint)
+GET {{baseUrl}}/health
+
+### API Information (Public endpoint)
+GET {{baseUrl}}/api
+
+### Swagger Documentation (Public endpoint)
+GET {{baseUrl}}/swagger
+
+###
+### AUTHENTICATION TESTS
+###
+
+###
+### STEP 1: GENERATE JWT TOKEN FOR TESTING
+###
+
+### Generate a test JWT token (Use this first!)
+POST {{baseUrl}}/api/test/generate-token
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "email": "john.doe@techhive.com",
+  "roles": ["User", "Employee"]
+}
+
+### Generate admin token
+POST {{baseUrl}}/api/test/generate-token
+Content-Type: application/json
+
+{
+  "userId": "2",
+  "email": "jane.smith@techhive.com",
+  "roles": ["User", "Admin", "HR"]
+}
+
+### Validate a token (Test token validation)
+POST {{baseUrl}}/api/test/validate-token
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}"
+}
+
+###
+### STEP 2: TEST AUTHENTICATION ENDPOINTS
+###
+
+### Test protected endpoint without token (should return 401)
+GET {{baseUrl}}/api/test/protected
+
+### Test protected endpoint with valid token
+GET {{baseUrl}}/api/test/protected
+Authorization: Bearer {{authToken}}
+
+### Get current user info from JWT claims
+GET {{baseUrl}}/api/test/whoami
+Authorization: Bearer {{authToken}}
+
+###
+### STEP 3: TEST USER MANAGEMENT ENDPOINTS
+###
+
+### Get all users (Without token - should return 401)
+GET {{baseUrl}}/api/users
+
+### Get all users (With valid token)
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+
+### Get all users (With expired token - should return 401)
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{expiredToken}}
+
+### Get all users (With invalid token format - should return 401)
+GET {{baseUrl}}/api/users
+Authorization: Bearer invalid.token.format
+
+### Get user by ID (Without authentication)
+GET {{baseUrl}}/api/users/1
+
+### Get user by ID (With authentication)
+GET {{baseUrl}}/api/users/1
+Authorization: Bearer {{authToken}}
+
+### Get user by email (Without authentication)
+GET {{baseUrl}}/api/users/email/john.doe@techhive.com
+
+### Get user by email (With authentication)
+GET {{baseUrl}}/api/users/email/john.doe@techhive.com
+Authorization: Bearer {{authToken}}
+
+### Get users by department (Without authentication)
+GET {{baseUrl}}/api/users/department/IT
+
+### Get users by department (With authentication)
+GET {{baseUrl}}/api/users/department/IT
+Authorization: Bearer {{authToken}}
+
+### Search users (Without authentication)
+GET {{baseUrl}}/api/users/search?searchTerm=john
+
+### Search users (With authentication)
+GET {{baseUrl}}/api/users/search?searchTerm=john
+Authorization: Bearer {{authToken}}
+
+###
+### TOKEN FROM QUERY PARAMETER (Alternative authentication method)
+###
+
+### Get users with token in query parameter
+GET {{baseUrl}}/api/users?access_token={{authToken}}
+
+###
+### CREATE/UPDATE/DELETE OPERATIONS (Require authentication)
+###
+
+###
+### CREATE/UPDATE/DELETE OPERATIONS (Require authentication)
+###
+
+### Create new user (Without authentication - should return 401)
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Johnson",
+  "email": "alice.johnson@techhive.com",
+  "phoneNumber": "555-0104",
+  "department": "Marketing",
+  "position": "Marketing Manager",
+  "address": "456 Marketing Ave, Business District",
+  "salary": 80000,
+  "hireDate": "2024-01-01T00:00:00Z"
+}
+
+### Create new user (With authentication)
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "firstName": "Alice",
+  "lastName": "Johnson",
+  "email": "alice.johnson@techhive.com",
+  "phoneNumber": "555-0104",
+  "department": "Marketing",
+  "position": "Marketing Manager",
+  "address": "456 Marketing Ave, Business District",
+  "salary": 80000,
+  "hireDate": "2024-01-01T00:00:00Z"
+}
+
+### Update user (Without authentication)
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+
+{
+  "phoneNumber": "555-0199",
+  "salary": 78000,
+  "position": "Senior Software Developer"
+}
+
+### Update user (With authentication)
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "phoneNumber": "555-0199",
+  "salary": 78000,
+  "position": "Senior Software Developer"
+}
+
+###
+### VALIDATION AND ERROR TESTING
+###
+
+### Create user with validation error (missing required fields)
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "firstName": "Bob",
+  "email": "invalid-email"
+}
+
+### Create user with duplicate email
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "firstName": "Duplicate",
+  "lastName": "User",
+  "email": "john.doe@techhive.com",
+  "department": "Test",
+  "position": "Test Position"
+}
+
+### Delete user (Without authentication)
+DELETE {{baseUrl}}/api/users/3
+
+### Delete user (With authentication - soft delete)
+DELETE {{baseUrl}}/api/users/3
+Authorization: Bearer {{authToken}}
+
+### Try to get deleted user
+GET {{baseUrl}}/api/users/3
+Authorization: Bearer {{authToken}}
+
+###
+### ERROR HANDLING MIDDLEWARE TESTING
+###
+
+### Test server error (if you have endpoints that throw exceptions)
+# GET {{baseUrl}}/api/test/error
+# Authorization: Bearer {{authToken}}
+
+### Test not found error
+GET {{baseUrl}}/api/users/99999
+Authorization: Bearer {{authToken}}
+
+### Test invalid route
+GET {{baseUrl}}/api/invalid-endpoint
+Authorization: Bearer {{authToken}}
+
+###
+### LOGGING MIDDLEWARE TESTING
+###
+
+### Test various HTTP methods for logging
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "test.user@techhive.com",
+  "department": "Test",
+  "position": "Test Position"
+}
+
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "position": "Updated Position"
+}
+
+DELETE {{baseUrl}}/api/users/2
+Authorization: Bearer {{authToken}}
+
+###
+### COOKIE-BASED AUTHENTICATION TEST
+###
+
+### Test authentication with cookie (set auth_token cookie in browser)
+GET {{baseUrl}}/api/users
+Cookie: auth_token={{authToken}}
+
+###
+### PERFORMANCE TESTING
+###
+
+### Test caching performance (run multiple times to see cache effect)
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+
+### Test search performance
+GET {{baseUrl}}/api/users/search?searchTerm=dev
+Authorization: Bearer {{authToken}}
+
+### Test department filtering performance
+GET {{baseUrl}}/api/users/department/IT
+Authorization: Bearer {{authToken}}
