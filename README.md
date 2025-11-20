@@ -1,0 +1,2 @@
+# CourseraCopilotAPI
+Coursera Copilot API
