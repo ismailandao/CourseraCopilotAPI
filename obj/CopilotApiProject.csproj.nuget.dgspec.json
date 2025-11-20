@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode\\CopilotApiProject\\CopilotApiProject\\CopilotApiProject.csproj": {}
+    "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode_github\\CopilotApiProject\\CopilotApiProject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode\\CopilotApiProject\\CopilotApiProject\\CopilotApiProject.csproj": {
+    "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode_github\\CopilotApiProject\\CopilotApiProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode\\CopilotApiProject\\CopilotApiProject\\CopilotApiProject.csproj",
+        "projectUniqueName": "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode_github\\CopilotApiProject\\CopilotApiProject.csproj",
         "projectName": "CopilotApiProject",
-        "projectPath": "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode\\CopilotApiProject\\CopilotApiProject\\CopilotApiProject.csproj",
+        "projectPath": "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode_github\\CopilotApiProject\\CopilotApiProject.csproj",
         "packagesPath": "C:\\Users\\indao\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode\\CopilotApiProject\\CopilotApiProject\\obj\\",
+        "outputPath": "C:\\Users\\indao\\OneDrive - Bureau Veritas\\Documents\\vscode_github\\CopilotApiProject\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\indao\\AppData\\Roaming\\NuGet\\NuGet.Config"
